@@ -15,7 +15,7 @@ class Plot:
     plt.style.use(style_path)
     pass  
     
-  def RoundToSigFig(self, val, sf):
+  def round_sf(self, val, sf):
     """  
       Round a value to a specified number of significant figures 
     """  
@@ -29,7 +29,7 @@ class Plot:
       # Round to the nearest number of significant figures
       return round(val * scale) / scale
 
-  def GetStats(self, array, xmin, xmax): 
+  def get_stats(self, array, xmin, xmax): 
     """  
       Stats for 1D histograms
     """ 
@@ -43,7 +43,7 @@ class Plot:
     overflows = len(array[array > xmax]) # Number of overflows
     return n_entries, mean, mean_err, std_dev, std_dev_err, underflows, overflows
 
-  def ScientificNotation(self, ax, cbar=None): #FIXME - we might want to make the extreme ranges bigger
+  def sci_not(self, ax, cbar=None): #FIXME - we might want to make the extreme ranges bigger
     """  
       Set scientific notation on axes
       Condition: log scale is not used and the absolute limit is >= 1e4 or <= 1e-4 
@@ -64,7 +64,7 @@ class Plot:
           cbar.ax.ticklabel_format(style='sci', axis='y', scilimits=(0, 0))  # Set scientific notation
     return
 
-  def Plot1D(
+  def plot1D(
     self, array, weights=None, nbins=100, xmin=-1.0, xmax=1.0, 
     title=None, xlabel=None, ylabel=None, col='black', leg_pos='best', fout='hist.png', NDPI=300, 
     stats=True, log_x=False, log_y=False, under_over=False, stat_errors=False, error_bars=False,
@@ -104,14 +104,14 @@ class Plot:
       ax.set_yscale('log')
       
     # Statistics
-    N, mean, mean_err, std_dev, std_dev_err, underflows, overflows = self.GetStats(array, xmin, xmax)
+    N, mean, mean_err, std_dev, std_dev_err, underflows, overflows = self.get_stats(array, xmin, xmax)
     
     # Create legend text (roughly imitating the ROOT statbox)
-    leg_txt = f'Entries: {N}\nMean: {self.RoundToSigFig(mean, 3)}\nStd Dev: {self.RoundToSigFig(std_dev, 3)}'
+    leg_txt = f'Entries: {N}\nMean: {self.round_sf(mean, 3)}\nStd Dev: {self.round_sf(std_dev, 3)}'
     
     # stats box
     if stat_errors: 
-      leg_txt = f'Entries: {N}\nMean: {self.RoundToSigFig(mean, 3)}' + rf'$\pm$' + f'{self.RoundToSigFig(mean_err, 1)}\nStd Dev: {self.RoundToSigFig(std_dev, 3)}' rf'$\pm$' + f'{self.RoundToSigFig(std_dev_err, 1)}'
+      leg_txt = f'Entries: {N}\nMean: {self.round_sf(mean, 3)}' + rf'$\pm$' + f'{self.round_sf(mean_err, 1)}\nStd Dev: {self.round_sf(std_dev, 3)}' rf'$\pm$' + f'{self.round_sf(std_dev_err, 1)}'
     if under_over: 
       leg_txt += f'\nUnderflows: {underflows}\nOverflows: {overflows}'
     
@@ -125,7 +125,7 @@ class Plot:
     ax.set_ylabel(ylabel) 
 
     # Scientific notation 
-    self.ScientificNotation(ax)
+    self.sci_not(ax)
     
     # Draw
     plt.tight_layout()
@@ -144,7 +144,7 @@ class Plot:
 
     return
     
-  def Plot1DOverlay(
+  def plot1D_overlay(
     self, hists_dict, nbins=100, xmin=-1.0, xmax=1.0,
     title=None, xlabel=None, ylabel=None, fout='hist.png', NDPI=300, 
     leg_pos='best', log_x=False, log_y=False, show=True, save=True
@@ -174,7 +174,7 @@ class Plot:
     ax.set_ylabel(ylabel) 
     
     # Scientific notation
-    self.ScientificNotation(ax)
+    self.sci_not(ax)
     
     # Add legend to the plot
     ax.legend(loc=leg_pos)
@@ -196,7 +196,7 @@ class Plot:
     
     return
   
-  def Plot2D(
+  def plot2D(
       self, x, y, weights=None, nbins_x=100, xmin=-1.0, xmax=1.0, nbins_y=100, ymin=-1.0, ymax=1.0,
       title=None, xlabel=None, ylabel=None, zlabel=None, fout='hist.png', cmap='inferno', NDPI=300,
       log_x=False, log_y=False, log_z=False, cb=True, show=True, save=True
@@ -255,7 +255,7 @@ class Plot:
     plt.ylabel(ylabel)
     
     # Scientific notation
-    self.ScientificNotation(ax, cbar)
+    self.sci_not(ax, cbar)
     
     # Draw 
     plt.tight_layout()
@@ -274,7 +274,7 @@ class Plot:
     
     return
   
-  def PlotGraph(
+  def plot_graph(
       self, x, y, xerr=None, yerr=None,
       title=None, xlabel=None, ylabel=None,
       xmin=None, xmax=None, ymin=None, ymax=None,
@@ -314,7 +314,7 @@ class Plot:
     plt.ylabel(ylabel)
     
     # Scientific notation
-    self.ScientificNotation(ax) 
+    self.sci_not(ax) 
     
     # Draw
     plt.tight_layout()
@@ -333,7 +333,7 @@ class Plot:
 
     return
   
-  def PlotGraphOverlay(
+  def plot_graph_overlay(
       self, graphs_,
       title=None, xlabel=None, ylabel=None,
       xmin=None, xmax=None, ymin=None, ymax=None,
@@ -384,7 +384,7 @@ class Plot:
     plt.ylabel(ylabel)
     
     # Scientific notation 
-    self.ScientificNotation(ax) 
+    self.sci_not(ax) 
     
     # Legend
     ax.legend(loc=leg_pos)
@@ -414,7 +414,7 @@ class Plot:
 
     return
   
-  def BarChart(
+  def plot_bar(
       self, data_dict, title=None, xlabel=None, ylabel=None, 
       fout="bar_chart.png", percentage=False, show=False, save=True
     ):
@@ -463,7 +463,7 @@ class Plot:
 
     return
   
-  def BarChartOverlay(
+  def plot_bar_overlay(
       self, data_dict, title=None, xlabel=None, ylabel=None, 
       fout="bar_chart_overlay.png", percentage=False, show=False, save=True
     ):
