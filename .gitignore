@@ -11,7 +11,7 @@ Output/*
 !Output/
 # Ignore everything inside the Data directory
 Data/*
-# But keep the Output directory itself
+# But keep the Data directory itself
 !Data/
 # Ignore all ipynb_checkpoints 
 .ipynb_checkpoints
