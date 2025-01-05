@@ -1,0 +1,19 @@
+# Ignore Python bytecode files and pycache directories
+__pycache__/
+*.pyc
+# Ignore all PNG files in all directories
+*.png
+# Ignore all directories named 'attic' at any level
+**/attic/
+# Ignore everything inside the Output directory
+Output/*
+# But keep the Output directory itself
+!Output/
+# Ignore everything inside the Data directory
+Data/*
+# But keep the Output directory itself
+!Data/
+# Ignore all ipynb_checkpoints 
+.ipynb_checkpoints
+# Ignore all DS_store 
+.DS_Store
